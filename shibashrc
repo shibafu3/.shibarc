@@ -1,0 +1,119 @@
+# https://hacknote.jp/archives/8043/
+# https://takuya-1st.hatenablog.jp/entry/2015/12/15/030119
+function cdls () {
+  command cd "$@" && ls
+}
+alias cd="cdls"
+
+alias dc="docker container"
+alias di="docker image"
+alias dcls="docker container ls"
+alias dils="docker image ls"
+alias dcla="docker container ls -a"
+alias dila="docker image ls -a"
+function dcrunit () {
+  docker container run -it --net host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix $@ /bin/bash
+}
+alias dcrungui="docker container run -it --net host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix"
+alias dcrungpu="docker container run -it --net host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all"
+
+alias lol="git config --global alias.lol \"log --graph --decorate --pretty=oneline --abbrev-commit --all\""
+alias gd="git diff"
+alias gs="git status"
+alias gl="git lol"
+alias gg="git log"
+
+export PIPENV_VENV_IN_PROJECT=1
+
+alias portainer="docker container run -d -p 9000:9000 --name portainer01 -h portainer01 --restart always --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock --mount type=bind,src=/home/shiba/portainer/data,dst=/data portainer/portainer"
+
+
+
+##############################################
+# myrmの設定
+# https://qiita.com/tkj/items/8ffe89f4237d5550f737
+##############################################
+# 概要
+# rmコマンドでファイルを削除するのではなく移動させる。
+# また、指定数だけファイルを残し、それ以上溜まった場合は古いものから
+# 消していく。
+function myrm {
+    local _limit=20 #ローテートの最大サイズ。
+    local _trash_top=""
+    local _del_list=()
+    local _param=""
+    local _trash_list=""
+    local _ignore=false # true: ハイフンを無視。削除する。/ false: ハイフンはオプション
+    local _sudo_flg=false
+    [ "$1" = '--sudo' ] && {
+      _sudo_flg=true
+      shift
+    }
+
+    #ゴミ箱ディレクトリ。この配下に日時でディレクトリがきられる。
+    #evalをつけるのはチルダを展開するためです..
+    eval _trash_top="~/.rm_trash"
+    _trash="${_trash_top}/rm_$(date +%Y%m%d_%H%M%S)"
+    ################
+    # 削除対象の取得
+    ################
+    while :;do
+        _param=$1
+        shift
+        [ "$_param" ] || break
+        if $_ignore ; then
+            _del_list[${#_del_list[*]}]=$_param
+        elif [ "$_param" == "--" ] ; then
+            _ignore=true
+        elif (echo "$_param"|grep -q "^-") ;then
+            :
+        else
+            _del_list[${#_del_list[*]}]=$_param
+        fi
+    done
+    ################
+    # 削除(mv)処理
+    ################
+    mkdir -p $_trash
+    if $_sudo_flg;then
+      # commandコマンドをつけるは、この後"alias sudo=xxx"をしてるので
+      # 元のsudoを実行するためです
+      command sudo mv -- ${_del_list[@]} $_trash 2>/dev/null
+      command sudo chown -R $(whoami):$(groups) $_trash 2>/dev/null
+    else
+      mv -- ${_del_list[@]} $_trash 2>/dev/null
+    fi
+    for fn in  ${_del_list[@]};do
+      # 移動したはずのファイルが存在する場合は警告。（上でエラーを捨ててるため）
+      [ -e "$fn" ] && echo "rm: cannot remove '$fn': Operation not permitte (myrm)"
+    done
+    # もし何も移動されなかったら作った空のディレクトリを削除
+    rmdir $_trash 2>/dev/null
+
+    ################
+    # ローテート
+    ################
+    # shift_numより古い物を削除
+    _trash_list=($(ls -d ${_trash_top}/rm_* 2>/dev/null | xargs -r echo))
+    for((;$_limit < ${#_trash_list[*]}; $[_limit++]));do
+        command rm -rf ${_trash_list[$_limit]}
+    done
+}
+alias rm="myrm"
+##############################################
+# sudo myrm の設定
+##############################################
+# 概要
+# 前述myrmのsudo版。sudo版の場合はchownを行って所有者を自分にする。
+# $ sudo rm hogehoge
+# とすると、myrm --sudo を実行する。
+function sudo_myrm {
+    # rm コマンドの場合はshift。それ以外は実行してreturn
+    if [ "$1" = "rm" ];then
+      shift
+      myrm --sudo "$@"
+    else
+      command sudo "$@"
+    fi
+}
+alias sudo="sudo_myrm"
