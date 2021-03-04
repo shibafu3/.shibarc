@@ -1,3 +1,4 @@
+# cd -> ls
 # https://hacknote.jp/archives/8043/
 # https://takuya-1st.hatenablog.jp/entry/2015/12/15/030119
 function cdls () {
@@ -5,6 +6,7 @@ function cdls () {
 }
 alias cd="cdls"
 
+# Docker
 alias dc="docker container"
 alias di="docker image"
 alias dcls="docker container ls"
@@ -17,6 +19,7 @@ function dcrunit () {
 alias dcrungui="docker container run -it --net host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix"
 alias dcrungpu="docker container run -it --net host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all"
 
+# git
 alias lol="git config --global alias.lol \"log --graph --decorate --pretty=oneline --abbrev-commit --all\""
 alias gd="git diff"
 alias gs="git status"
@@ -27,8 +30,10 @@ alias gg="git log"
 alias melodic="source /opt/ros/melodic/setup.bash && source ~/catkin_ws/devel/setup.bash"
 alias cm="melodic && cd ~/catkin_ws && catkin_make -i ; cd -"
 
+# pipenv
 export PIPENV_VENV_IN_PROJECT=1
 
+# portainer
 alias portainer="docker container run -d -p 9000:9000 --name portainer01 -h portainer01 --restart always --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock --mount type=bind,src=/home/shiba/portainer/data,dst=/data portainer/portainer"
 
 
