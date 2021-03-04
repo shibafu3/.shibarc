@@ -4,3 +4,4 @@
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
 echo "source ${SCRIPT_DIR}/shibashrc" >> ~/.bashrc
+echo "set completion-ignore-case on" >> ~/.inputrc
