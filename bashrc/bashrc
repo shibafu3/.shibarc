@@ -23,6 +23,10 @@ alias gs="git status"
 alias gl="git lol"
 alias gg="git log"
 
+# ROS Melodic
+alias melodic="source /opt/ros/melodic/setup.bash && source ~/catkin_ws/devel/setup.bash"
+alias cm="melodic && cd ~/catkin_ws && catkin_make -i ; cd -"
+
 export PIPENV_VENV_IN_PROJECT=1
 
 alias portainer="docker container run -d -p 9000:9000 --name portainer01 -h portainer01 --restart always --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock --mount type=bind,src=/home/shiba/portainer/data,dst=/data portainer/portainer"
