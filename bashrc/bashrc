@@ -36,6 +36,12 @@ export PIPENV_VENV_IN_PROJECT=1
 # portainer
 alias portainer="docker container run -d -p 9000:9000 --name portainer01 -h portainer01 --restart always --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock --mount type=bind,src=/home/shiba/portainer/data,dst=/data portainer/portainer"
 
+# Carla
+alias carla-server9="docker container run --rm -e SDL_VIDEODRIVER=x11 -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --add-host=localhost:172.17.0.1 -p 2000-2002:2000-2002 -it --gpus all carla-server:0.9.9 ./CarlaUE4.sh -opengl"
+alias carla-server10="docker container run --rm -e SDL_VIDEODRIVER=x11 -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --add-host=localhost:172.17.0.1 -p 2000-2002:2000-2002 -it --gpus all carlasim/carla:0.9.10.1 ./CarlaUE4.sh -opengl"
+alias carla-server11="docker container run --rm -e SDL_VIDEODRIVER=x11 -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --add-host=localhost:172.17.0.1 -p 2000-2002:2000-2002 -it --gpus all carlasim/carla:0.9.11 ./CarlaUE4.sh -opengl"
+alias carla-ros-bridge9="docker container run --rm -it --net=host carla-ros-bridge:0.9.9"
+alias carla-ros-bridge10="docker container run --rm -it --net=host carla-ros-bridge:0.9.10.1"
 
 
 ##############################################
