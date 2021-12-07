@@ -22,7 +22,8 @@ alias dcrungui="docker container run -it --net host -e DISPLAY=$DISPLAY -v /tmp/
 alias dcrungpu="docker container run -it --net host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all"
 
 # git
-alias lol="git config --global alias.lol \"log --graph --decorate --pretty=oneline --abbrev-commit --all\""
+# https://gist.github.com/olivierlacan/3237765
+alias enablegitlol="git config --global alias.lol \"log --graph --decorate --pretty=oneline --abbrev-commit --all\""
 alias gd="git diff"
 alias gs="git status"
 alias gl="git lol"
