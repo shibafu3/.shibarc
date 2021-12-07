@@ -37,7 +37,7 @@ alias cm="melodic && cd ~/catkin_ws && catkin_make -i ; cd -"
 export PIPENV_VENV_IN_PROJECT=1
 
 # portainer
-alias portainer="docker container run -d -p 9000:9000 --name portainer01 -h portainer01 --restart always --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock --mount type=bind,src=/home/shiba/portainer/data,dst=/data portainer/portainer"
+alias portainer="mkdir -p /home/$USER/.portainer/data ; docker container run -d -p 9000:9000 --name portainer01 -h portainer01 --restart always --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock --mount type=bind,src=/home/$USER/.portainer/data,dst=/data portainer/portainer"
 
 # Carla
 alias carla-server9="docker container run --rm -e SDL_VIDEODRIVER=x11 -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --add-host=localhost:172.17.0.1 -p 2000-2002:2000-2002 -it --gpus all carla-server:0.9.9 ./CarlaUE4.sh -opengl"
