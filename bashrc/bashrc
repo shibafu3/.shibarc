@@ -7,6 +7,8 @@ function cdls () {
 alias cd="cdls"
 
 # Docker
+# http://okazu.air-nifty.com/blog/2009/01/xhost-3d21.html
+alias enabledockergui="xhost +local:user"
 # https://qiita.com/DQNEO/items/da5df074c48b012152ee
 alias enablenosudodocker="sudo groupadd docker && sudo gpasswd -a $USER docker && sudo systemctl restart docker"
 alias dc="docker container"
@@ -16,10 +18,10 @@ alias dils="docker image ls"
 alias dcla="docker container ls -a"
 alias dila="docker image ls -a"
 function dcrunit () {
-  docker container run -it --net host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix $@ /bin/bash
+  enabledockergui && docker container run -it --net host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix $@ /bin/bash
 }
-alias dcrungui="docker container run -it --net host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix"
-alias dcrungpu="docker container run -it --net host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all"
+alias dcrungui="enabledockergui && docker container run -it --net host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix"
+alias dcrungpu="enabledockergui && docker container run -it --net host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --gpus all"
 
 # git
 # https://gist.github.com/olivierlacan/3237765
