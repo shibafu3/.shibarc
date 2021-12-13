@@ -10,7 +10,7 @@ alias cd="cdls"
 # http://okazu.air-nifty.com/blog/2009/01/xhost-3d21.html
 alias enabledockergui="xhost +local:user"
 # https://qiita.com/DQNEO/items/da5df074c48b012152ee
-alias enablenosudodocker="sudo groupadd docker && sudo gpasswd -a $USER docker && sudo systemctl restart docker"
+alias enablenosudodocker="sudo groupadd docker ; sudo gpasswd -a $USER docker && sudo systemctl restart docker"
 alias dc="docker container"
 alias di="docker image"
 alias dcls="docker container ls"
