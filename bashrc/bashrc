@@ -34,6 +34,7 @@ alias gg="git log"
 # ROS Melodic
 alias melodic="source /opt/ros/melodic/setup.bash && source ~/catkin_ws/devel/setup.bash"
 alias cm="melodic && cd ~/catkin_ws && catkin_make -i ; cd -"
+alias rosguifoxy="docker run --rm -p 6080:80 --shm-size=1024m tiryoh/ros2-desktop-vnc:foxy"
 
 # pipenv
 export PIPENV_VENV_IN_PROJECT=1
